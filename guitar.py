@@ -1,3 +1,5 @@
+import os
+
 with open("wordlist.10000.txt", "r", encoding="utf-8") as f:
     wordlist = [line.strip() for line in f]
 
@@ -7,6 +9,8 @@ while True:
     if word.lower() == "exit":
         print("Bye!")
         break
+
+    os.system("cls" if os.name == "nt" else "clear")
 
     found = False
     for line in wordlist:

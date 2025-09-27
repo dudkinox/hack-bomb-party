@@ -8,17 +8,16 @@ import numpy as np
 import pytesseract
 from mss import mss
 
-# หากใช้ Windows และต้องการกำหนด path ให้ Tesseract:
 pytesseract.pytesseract.tesseract_cmd = r"C:\Program Files\Tesseract-OCR\tesseract.exe"
 
-# ปรับค่าตามต้องการ
-WORDLIST_PATH = "wordlist.10000.txt"  # ไฟล์คำศัพท์ของคุณ
-INTERVAL = 0.8  # วินาที ระหว่างการจับภาพแต่ละรอบ
-CHANGE_THRESHOLD = 0.6  # ถ้า similarity < threshold => ถือว่าข้อความ "เปลี่ยน"
-SHOW_DEBUG_WINDOW = False  # True เพื่อโชว์หน้าต่าง preview (debug)
+WORDLIST_PATH = "wordlist.10000.txt"
+INTERVAL = 0.8
+CHANGE_THRESHOLD = 0.6
+SHOW_DEBUG_WINDOW = False
+
+os.system("color a")
 
 
-# โหลด wordlist แบบเก็บในหน่วยความจำ
 def load_wordlist(path: str) -> List[str]:
     if not os.path.exists(path):
         raise FileNotFoundError(f"Wordlist not found: {path}")
@@ -26,7 +25,6 @@ def load_wordlist(path: str) -> List[str]:
         return [line.strip() for line in f if line.strip()]
 
 
-# ค้นหาแบบ contain (case-insensitive)
 def search_wordlist(q: str, wordlist: List[str]) -> List[str]:
     q_low = q.lower().strip()
     if not q_low:
@@ -35,12 +33,10 @@ def search_wordlist(q: str, wordlist: List[str]) -> List[str]:
     return matches
 
 
-# ฟังก์ชันช่วย clean console
 def clear_console():
     os.system("cls" if os.name == "nt" else "clear")
 
 
-# เปรียบเทียบความเหมือนของข้อความ (1.0 = เหมือนกันเป๊ะ)
 def similarity(a: str, b: str) -> float:
     return difflib.SequenceMatcher(None, a, b).ratio()
 
@@ -94,7 +90,6 @@ def main():
     print(f"Selected ROI: x={x}, y={y}, w={w}, h={h}")
     prev_text = ""
 
-    # ใช้ตัวแปรท้องถิ่นเพื่อเก็บสถานะหน้าต่าง debug (ถ้า SHOW_DEBUG_WINDOW = True เราจะแสดง)
     debug_shown = False
 
     try:
@@ -104,14 +99,11 @@ def main():
             frame = np.array(sct_img)
             frame = cv2.cvtColor(frame, cv2.COLOR_BGRA2BGR)
 
-            # ถ้าผู้ใช้ต้องการ preview ให้ใช้ debug_shown เพื่อควบคุมหน้าต่าง
             if SHOW_DEBUG_WINDOW:
-                # ถ้ายังไม่เคยแสดง ให้สร้างหน้าต่าง
                 if not debug_shown:
                     cv2.namedWindow("ROI preview", cv2.WINDOW_NORMAL)
                     debug_shown = True
                 cv2.imshow("ROI preview", frame)
-                # อ่านคีย์แบบ non-blocking; ถ้า ESC กด ให้ปิดหน้าต่าง preview เท่านั้น
                 key = cv2.waitKey(1) & 0xFF
                 if key == 27:  # ESC
                     cv2.destroyWindow("ROI preview")
@@ -142,7 +134,6 @@ def main():
     except KeyboardInterrupt:
         print("\nExiting... Bye!")
     finally:
-        # ทำความสะอาดหน้าต่างถ้ายังเปิดอยู่
         try:
             cv2.destroyAllWindows()
         except Exception:

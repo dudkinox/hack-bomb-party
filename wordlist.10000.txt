@@ -1,3 +1,4 @@
+coerce
 a
 aa
 aaa

@@ -1,5 +1,7 @@
 import os
 
+os.system("color a")
+
 with open("wordlist.10000.txt", "r", encoding="utf-8") as f:
     wordlist = [line.strip() for line in f]
 

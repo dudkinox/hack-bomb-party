@@ -121,6 +121,8 @@ def main():
                 clear_console()
                 if text == "1O":
                     text = "I0"
+                if text == "O1":
+                    text = "01"
                 print(f"Detected text: '{text}' (similarity={sim:.2f})")
                 print("-" * 40)
                 if matches:

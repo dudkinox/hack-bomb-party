@@ -10,7 +10,7 @@ from mss import mss
 
 pytesseract.pytesseract.tesseract_cmd = r"/opt/homebrew/bin/tesseract"
 
-WORDLIST_PATH = "wordlist.10000.txt"
+WORDLIST_PATH = "wordlist.gpt.txt"
 INTERVAL = 0.8
 CHANGE_THRESHOLD = 0.6
 SHOW_DEBUG_WINDOW = False
@@ -132,6 +132,19 @@ def main():
                     if len(matches) > 200:
                         print(f"... and {len(matches) - 200} more")
                 else:
+                    filename = "not_found_text.txt"
+                    if text != "":
+                        if os.path.exists(filename):
+                            with open(filename, "rb+") as f:
+                                f.seek(0, os.SEEK_END)
+                                if f.tell() > 0: 
+                                    f.seek(-1, os.SEEK_END)
+                                    last_char = f.read(1)
+                                    if last_char != b"\n":
+                                        f.write(b"\n")
+
+                        with open(filename, "a", encoding="utf-8") as f:
+                            f.write(f"{text}\n")
                     print("No match found.")
                 print("\n(Press Ctrl+C to quit)")
             time.sleep(INTERVAL)

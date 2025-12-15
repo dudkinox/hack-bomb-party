@@ -10,7 +10,7 @@ from mss import mss
 
 pytesseract.pytesseract.tesseract_cmd = r"C:\Program Files\Tesseract-OCR\tesseract.exe"
 
-WORDLIST_PATH = "wordlist.10000.txt"
+WORDLIST_PATH = "wordlist.gpt.txt"
 INTERVAL = 0.8
 CHANGE_THRESHOLD = 0.6
 SHOW_DEBUG_WINDOW = False
